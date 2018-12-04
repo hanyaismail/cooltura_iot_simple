@@ -1,5 +1,6 @@
 const http = require('http').createServer(handler);
 const fs = require('fs')
+const io = require('socket.io')(http)
 
 http.listen(8080, () => {
   console.log('listening on port 8080')
@@ -16,3 +17,10 @@ function handler(req, res) {
     return res.end();
   });
 }
+
+io.on('connection', socket => {
+  socket.emit('news', {hello: 'world'});
+  socket.on('myOtherEvent', data => {
+    console.log('data', data);
+  })
+})

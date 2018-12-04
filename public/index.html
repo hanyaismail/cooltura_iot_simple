@@ -81,6 +81,16 @@
     </style>
   </head>
   <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <script>
+      var socket = io()
+      window.addEventListener("load", () => {
+        socket.on('news', data => {
+          console.log('data', data)
+        })
+        socket.emit('myOtherEvent', 'test')
+      })
+    </script>
     <div class="main">
       <h1>Cooltura IoT Prototype v0.1</h1>
       <div class="container">
