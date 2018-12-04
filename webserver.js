@@ -23,4 +23,10 @@ io.on('connection', socket => {
   socket.on('myOtherEvent', data => {
     console.log('data', data);
   })
+  socket.on('light', data => {
+    console.log('light data', data)
+  })
+  socket.on('fogger', data => {
+    console.log('fogger data', data)
+  })
 })

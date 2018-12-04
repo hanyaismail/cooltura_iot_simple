@@ -84,6 +84,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <script>
       var socket = io()
+
+      const handleFoggerClick = (cb, num) => {
+        console.log('num', num, cb.checked)
+        socket.emit('fogger', {foggerNum: num, state: Number(cb.checked)});
+      }
+
+      const handleLightClick = (cb, num) => {
+        console.log('num', num, cb.checked)
+        socket.emit('light', {lightNum: num, state: Number(cb.checked)});
+      }
+
       window.addEventListener("load", () => {
         socket.on('news', data => {
           console.log('data', data)
@@ -97,36 +108,36 @@
         <div>
           <h1>Fogger 1</h1>
           <label class="switch">
-            <input id="fogger1" type="checkbox">
+            <input id="fogger1" onclick="handleFoggerClick(this, '1')" type="checkbox">
             <span class="slider round"></span>
           </label>
 
           <h1>Fogger 2</h1>
           <label class="switch">
-            <input id="fogger2" type="checkbox">
+            <input id="fogger2" onclick="handleFoggerClick(this, '2')" type="checkbox">
             <span class="slider round"></span>
           </label>
 
           <h1>Fogger 3</h1>
           <label class="switch">
-            <input id="fogger3" type="checkbox">
+            <input id="fogger3" onclick="handleFoggerClick(this, '3')" type="checkbox">
             <span class="slider round"></span>
           </label>
         </div>
         <div>
           <h1>Light 1</h1>
           <label class="switch">
-            <input id="light1" type="checkbox">
+            <input id="light1" onclick="handleLightClick(this, '1')" type="checkbox">
             <span class="slider"></span>
           </label>
           <h1>Light 2</h1>
           <label class="switch">
-            <input id="light2" type="checkbox">
+            <input id="light2" onclick="handleLightClick(this, '2')" type="checkbox">
             <span class="slider"></span>
           </label>
           <h1>Light 3</h1>
           <label class="switch">
-            <input id="light3" type="checkbox">
+            <input id="light3" onclick="handleLightClick(this, '3')" type="checkbox">
             <span class="slider"></span>
           </label>
         </div>
