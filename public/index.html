@@ -2,20 +2,19 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <style>
       body{
         font-family: "Trebuchet MS", Helvetica, sans-serif;
       }
 
       .main{
-        width: 500px;
+        max-width: 500px;
         margin: auto;
       }
 
-      .container{
-        display: flex;
+      .bg-pink{
         background:	#ff1493;
-        justify-content: space-around;
         padding: 50px;
       }
 
@@ -78,12 +77,22 @@
       .slider.round:before {
         border-radius: 50%;
       }
+
+      @media only screen and (max-width: 500px) {
+        /* For desktop: */
+        .sm-font{
+          font-size: 1.5em;
+        }
+      }
     </style>
   </head>
   <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <script>
       var socket = io()
+      var ligh1 = document.getElementById('light1')
+      var ligh2 = document.getElementById('light2')
+      var ligh3 = document.getElementById('light3')
 
       const handleFoggerClick = (cb, num) => {
         console.log('num', num, cb.checked)
@@ -95,53 +104,81 @@
         socket.emit('light', {lightNum: num, state: Number(cb.checked)});
       }
 
-      window.addEventListener("load", () => {
-        socket.on('news', data => {
-          console.log('data', data)
-        })
-        socket.emit('myOtherEvent', 'test')
+      socket.on('lightChange', data => {
+        console.log('data', data)
+        switch (data.lightNum) {
+          case '1':
+            light1.checked = data.state
+            break;
+          case '2':
+            light2.checked = data.state
+            break;
+          case '3':
+            light3.checked = data.state
+            break;
+        }
+      })
+
+      socket.on('foggerChange', data => {
+        console.log('data', data)
+        switch (data.foggerNum) {
+          case '1':
+            fogger1.checked = data.state
+            break;
+          case '2':
+            fogger2.checked = data.state
+            break;
+          case '3':
+            fogger3.checked = data.state
+            break;
+        }
       })
     </script>
     <div class="main">
-      <h1>Cooltura IoT Prototype v0.1</h1>
-      <div class="container">
-        <div>
-          <h1>Fogger 1</h1>
-          <label class="switch">
-            <input id="fogger1" onclick="handleFoggerClick(this, '1')" type="checkbox">
-            <span class="slider round"></span>
-          </label>
+      <h1 class="sm-font">Cooltura IoT Prototype v0.1</h1>
+      <div class="container bg-pink">
+        <div class="row">
+          <div class="col-6">
+            <h1 class="sm-font">Fogger 1</h1>
+            <label class="switch">
+              <input id="fogger1" onclick="handleFoggerClick(this, '1')" type="checkbox">
+              <span class="slider round"></span>
+            </label>
 
-          <h1>Fogger 2</h1>
-          <label class="switch">
-            <input id="fogger2" onclick="handleFoggerClick(this, '2')" type="checkbox">
-            <span class="slider round"></span>
-          </label>
+            <h1 class="sm-font">Fogger 2</h1>
+            <label class="switch">
+              <input id="fogger2" onclick="handleFoggerClick(this, '2')" type="checkbox">
+              <span class="slider round"></span>
+            </label>
 
-          <h1>Fogger 3</h1>
-          <label class="switch">
-            <input id="fogger3" onclick="handleFoggerClick(this, '3')" type="checkbox">
-            <span class="slider round"></span>
-          </label>
-        </div>
-        <div>
-          <h1>Light 1</h1>
-          <label class="switch">
-            <input id="light1" onclick="handleLightClick(this, '1')" type="checkbox">
-            <span class="slider"></span>
-          </label>
-          <h1>Light 2</h1>
-          <label class="switch">
-            <input id="light2" onclick="handleLightClick(this, '2')" type="checkbox">
-            <span class="slider"></span>
-          </label>
-          <h1>Light 3</h1>
-          <label class="switch">
-            <input id="light3" onclick="handleLightClick(this, '3')" type="checkbox">
-            <span class="slider"></span>
-          </label>
+            <h1 class="sm-font">Fogger 3</h1>
+            <label class="switch">
+              <input id="fogger3" onclick="handleFoggerClick(this, '3')" type="checkbox">
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <div class="col-6">
+            <h1 class="sm-font">Light 1</h1>
+            <label class="switch">
+              <input id="light1" onclick="handleLightClick(this, '1')" type="checkbox">
+              <span class="slider"></span>
+            </label>
+            <h1 class="sm-font">Light 2</h1>
+            <label class="switch">
+              <input id="light2" onclick="handleLightClick(this, '2')" type="checkbox">
+              <span class="slider"></span>
+            </label>
+            <h1 class="sm-font">Light 3</h1>
+            <label class="switch">
+              <input id="light3" onclick="handleLightClick(this, '3')" type="checkbox">
+              <span class="slider"></span>
+            </label>
+          </div>
         </div>
       </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
   </body>
 </html>
